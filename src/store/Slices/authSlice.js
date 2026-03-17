@@ -29,11 +29,10 @@ export const createAccount = createAsyncThunk("register", async (data) => {
         throw error;
     }
 });
-
 export const userLogin = createAsyncThunk("login", async (data) => {
     try {
         const response = await axiosInstance.post("/users/login", data);
-        return response.data.data.user;
+        return response.data.data.user;  // ✅ Just return user
     } catch (error) {
         toast.error(error?.response?.data?.error);
         throw error;
@@ -43,11 +42,12 @@ export const userLogin = createAsyncThunk("login", async (data) => {
 export const userLogout = createAsyncThunk("logout", async () => {
     try {
         const response = await axiosInstance.post("/users/logout");
+        // Clear token from localStorage
+        localStorage.removeItem("accessToken");
         toast.success(response.data?.message);
         return response.data;
     } catch (error) {
         toast.error(error?.response?.data?.error);
-        throw error;
     }
 });
 

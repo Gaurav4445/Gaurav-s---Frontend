@@ -26,9 +26,8 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getCurrentUser());
-    }, [dispatch]);
-
+    dispatch(getCurrentUser());
+}, [dispatch]);
     return (
         <>
             <Routes>
