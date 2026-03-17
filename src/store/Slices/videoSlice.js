@@ -19,19 +19,20 @@ export const getAllVideos = createAsyncThunk(
     "getAllVideos",
     async ({ userId, sortBy, sortType, query, page, limit }) => {
         try {
-            const url = new URL(`${BASE_URL}/video`);
+            let endpoint = "/videos";
+            const params = new URLSearchParams();
 
-            if (userId) url.searchParams.set("userId", userId);
-            if (query) url.searchParams.set("query", query);
-            if (page) url.searchParams.set("page", page);
-            if (limit) url.searchParams.set("limit", limit);
+            if (userId) params.set("userId", userId);
+            if (query) params.set("query", query);
+            if (page) params.set("page", page);
+            if (limit) params.set("limit", limit);
             if (sortBy && sortType) {
-                url.searchParams.set("sortBy", sortBy);
-                url.searchParams.set("sortType", sortType);
+                params.set("sortBy", sortBy);
+                params.set("sortType", sortType);
             }
 
+            const url = params.toString() ? `${endpoint}?${params.toString()}` : endpoint;
             const response = await axiosInstance.get(url);
-
             return response.data.data;
         } catch (error) {
             toast.error(error?.response?.data?.error);
